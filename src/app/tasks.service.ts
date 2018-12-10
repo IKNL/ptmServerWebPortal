@@ -4,6 +4,7 @@ import { TASKS } from './dummy-tasks';
 import { Observable, of } from '../../node_modules/rxjs';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
+import { User } from './user';
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +12,19 @@ import { catchError, map, tap } from 'rxjs/operators';
 export class TasksService {
 
   private taskUrl = 'http://localhost:5000/api/task';
+  private loginUrl = 'http://localhost:5000/api/token';
 
   constructor(
     private http: HttpClient
   ) { }
+
+  /* temp */
+  login(username, password): Observable<User> {
+    return this.http.post<User>(this.loginUrl, {
+      'username': username,
+      'password': password
+    });
+  }
 
   getTasks(): Observable<Task[]> {
     return this.http.get<Task[]>(this.taskUrl).pipe(
